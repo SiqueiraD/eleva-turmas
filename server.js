@@ -15,13 +15,13 @@ const url = "mongodb://dbuser:ds151431@ds049624.mlab.com:49624/projects_quotes";
 // Database Name
 const dbName = 'projects_quotes';
 // Connection MongoDB to mLab (MongoLab)
-const client = new MongoClient(url);
+const client = new MongoClient(url, { useNewUrlParser: true });
 client.connect(
   (err) => {
     if (err) return console.log(err);
     db = client.db(dbName);
     app.listen(app.get("port"), function() {
-      console.log("listening on ", app.get("port"));
+      console.log("listening on: ", app.get("port"));
     });
   }
 );
