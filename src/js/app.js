@@ -2,15 +2,76 @@
 const app = angular.module('app', []);
 
 // Service to fetch some data..
-app.factory('dataServ', ['$http',($http) => {
+app.factory('dataServ', ['$http', ($http) => {
 	return {
-		get : ()=> $http.get('/data')
+		get: (url) => $http.get('/' + url),
+		post: (url, data) => $http.post('/' + url, data, { data: data }),
+		delete: (url, data) => $http.delete('/' + url, data, { data: data }),
 	}
 }]);
 
+
+
 // App controller
-app.controller('appController', ['$scope','dataServ', ($scope, Data) => {
-	Data.get().success(resp => {
-			$scope.funnyStuff = resp;
-		});
+app.controller('appController', ['$scope', 'dataServ', ($scope, Data) => {
+	Data.get('turmas').success(resp => {
+		$scope.turmas = resp;
+	});
+	Data.get('escolas').success(resp => {
+		$scope.escolas = resp;
+	});
+	function configuraMenu() {
+		var items = document.getElementsByClassName('nmenu-s');
+		for (var i = 0; i < items.length; i++) {
+			items[i].onclick = (evt) => {
+				var tabActived = evt.target.parentElement.getElementsByClassName('active')[0];
+				tabActived.className = tabActived.className.replace('active', '');
+				console.log(evt);
+			};
+		}
+	}
+	$scope.configuraMenu = configuraMenu();
+
+	$scope.addEscola = function() {
+		var nomeEscola = (inputNomeEscola || document.getElementById('inputNomeEscola')).value;
+		var localidadeEscola = (inputLocalidadeEscola || document.getElementById('inputLocalidadeEscola')).value;
+		var jsonEscola = new Object();
+		jsonEscola.nome = nomeEscola;
+		jsonEscola.localidade = localidadeEscola;
+		console.log(jsonEscola);
+		Data.post('escolas', jsonEscola).success(resp => {
+			(inputLocalidadeEscola || document.getElementById('inputLocalidadeEscola')).value = "";
+			(inputNomeEscola || document.getElementById('inputNomeEscola')).value = "";
+			$scope.escolas = resp;
+		})
+	}
+	$scope.removeEscola = function(item) {
+		Data.delete('escolas/' + item._id, item).success(resp => {
+			$scope.escolas = resp;
+		})
+	}
+	
+	
+	$scope.addTurma = function() {
+		var escolaId = (inputEscolaId || document.getElementById('inputEscolaId')).value;
+		var turmaNome = (inputTurmaNome || document.getElementById('inputTurmaNome')).value;
+		var jsonTurma = new Object();
+		jsonTurma.escola = new Object();
+		jsonTurma.escola.escola_id = escolaId;
+		jsonTurma.escola.nome = $scope.escolas.filter(x=> x._id == escolaId)[0].nome;
+		jsonTurma.nome = turmaNome;
+		console.log(jsonTurma);
+		Data.post('turmas', jsonTurma).success(resp => {
+			(inputEscolaId || document.getElementById('inputEscolaId')).value = "";
+			(inputTurmaNome || document.getElementById('inputTurmaNome')).value = "";
+			$scope.turmas = resp;
+		})
+	}
+	$scope.removeTurma = function(item) {
+		Data.delete('turmas/' + item._id, item).success(resp => {
+			$scope.turmas = resp;
+		})
+	}
+	
+	
 }]);
