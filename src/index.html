@@ -76,7 +76,9 @@
                       <input type="text" class="form-control" id="inputLocalidadeEscola" placeholder="Localidade">
                     </td>
                     <td>
-                      <button type="submit" class="btn btn-primary" ng-click="addEscola()">Add</button>
+                      <button type="submit" class="btn btn-primary" ng-click="addEscola()">
+                        <span class="oi oi-plus " title="plus" aria-hidden="true"></span>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -102,7 +104,7 @@
                 </thead>
                 <tbody>
                   <tr ng-repeat="turma in turmas">
-                    <td>{{turma.escola.nome}}</td>
+                    <td class="text-center">{{turma.escola.nome}}</td>
                     <td>{{turma.nome}}</td>
                     <td>
                       <button type="submit" class="btn btn-danger" ng-click="removeTurma(turma)">
@@ -125,7 +127,9 @@
                       <input type="text" class="form-control" id="inputTurmaNome" placeholder="Turma">
                     </td>
                     <td>
-                      <button type="submit" class="btn btn-primary" ng-click="addTurma()">Add</button>
+                      <button type="submit" class="btn btn-primary" ng-click="addTurma()">
+                        <span class="oi oi-plus " title="plus" aria-hidden="true"></span>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -139,7 +143,8 @@
 
           <div class="card">
             <div class="card-body">
-              This is some text within a card body.
+              Aplicativo básico para cadastrar escolas e turmas.
+              
             </div>
           </div>
 

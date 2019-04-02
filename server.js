@@ -93,10 +93,15 @@ app.delete("/escolas/:id", (req, res) => {
   var id = req.params.id;
   db.collection('escolas').deleteOne({ _id: new ObjectId(id) }, (err, result) => {
     if (err) return console.log(err)
-    console.log('delete to database')
+    console.log('delete to database: ' + id)
     db.collection("escolas").find().toArray(function(err, results) {
       res.json(results);
     });
+  })
+
+  db.collection('classes').deleteMany({ escola: { escola_id: id } }, (err) => {
+    if (err) return console.log(err)
+
   })
 })
 
