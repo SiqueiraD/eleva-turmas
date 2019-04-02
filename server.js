@@ -99,9 +99,9 @@ app.delete("/escolas/:id", (req, res) => {
     });
   })
 
-  db.collection('classes').deleteMany({ escola: { escola_id: id } }, (err) => {
+  db.collection('classes').deleteMany({ "escola.escola_id": id }, (err, results) => {
     if (err) return console.log(err)
-
+    console.log(results)
   })
 })
 
